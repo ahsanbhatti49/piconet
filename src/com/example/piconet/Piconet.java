@@ -25,7 +25,7 @@ public class Piconet {
     private final static String TAG = Piconet.class.getSimpleName();
     
     // Name for the SDP record when creating server socket
-    private static final String PICONET = "PICONET_BLUETOOTH";
+    private static final String PICONET = "ANDROID_PICONET_BLUETOOTH";
     
     private final BluetoothAdapter mBluetoothAdapter;
     
@@ -45,7 +45,7 @@ public class Piconet {
     
     private Handler handler = new Handler() {
       public void handleMessage(android.os.Message msg) {
-          switch (msg.what) {
+        switch (msg.what) {
         case 1:
             Toast.makeText(context, msg.getData().getString("msg"), Toast.LENGTH_SHORT).show();
             break;
@@ -77,10 +77,9 @@ public class Piconet {
         Thread connectionProvider = new Thread(new ConnectionProvider());
         connectionProvider.start();
         
-        startPiconet();
     }
     
-    private void startPiconet() {
+    public void startPiconet() {
         Log.d(TAG, " -- Looking devices -- ");
         // The devices must be already paired
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
@@ -94,6 +93,8 @@ public class Piconet {
                     connect(remoteDevice);
                 }
             }
+        } else {
+        	Toast.makeText(context, "No paired devices", Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -225,7 +226,7 @@ public class Piconet {
         BluetoothDevice remoteDevice = mBluetoothAdapter.getRemoteDevice(address);
         // Try to get connection through all uuids available
         for (int i = 0; i < mUuidList.size() && myBtSocket == null; i++) {
-            // Try to get the socket 3 times for each uuid of the list
+            // Try to get the socket 2 times for each uuid of the list
             for (int j = 0; j < 2 && myBtSocket == null; j++) {
                 Log.d(TAG, " ** Trying connection..." + j + " with " + device.getName() + ", uuid " + i + "...** ");
                 myBtSocket = getConnectedSocket(remoteDevice, mUuidList.get(i));
@@ -274,7 +275,7 @@ public class Piconet {
                 terminateFlag[0] = 0; // ascii table value NULL (code 0)
                 outStream.write(new byte[1]);
             } catch (IOException e) {
-                Log.d(TAG, "line 250", e);
+                Log.d(TAG, "line 278", e);
             }
         }
     }

@@ -8,7 +8,8 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
     
-    private Button piconetButton;
+	private Button discoveryButton;
+    private Button messageButton;
     
     private Piconet piconet;
 
@@ -18,12 +19,20 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         piconet = new Piconet(getApplicationContext());
-        
-        piconetButton = (Button) findViewById(R.id.piconetButton);
-        piconetButton.setOnClickListener(new View.OnClickListener() {
+
+        messageButton = (Button) findViewById(R.id.messageButton);
+        messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                piconet.bluetoothBroadcastMessage("Texto qualquer");
+                piconet.bluetoothBroadcastMessage("Working fine!");
+            }
+        });
+        
+        discoveryButton = (Button) findViewById(R.id.discoveryButton);
+        discoveryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                piconet.startPiconet();
             }
         });
         
